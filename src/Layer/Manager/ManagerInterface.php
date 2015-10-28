@@ -13,21 +13,21 @@ interface ManagerInterface
      * @param mixed $entity
      * @return mixed
      */
-    public function insert($entity);
+    public function insert();
 
     /**
      * Update exist entity data in the DB
      * @param $entity
      * @return mixed
      */
-    public function update($entity);
+    public function update();
 
     /**
      * Delete entity data from the DB
      * @param $entity
      * @return mixed
      */
-    public function remove($entity);
+    public function remove();
 
     /**
      * Search entity data in the DB by Id
@@ -35,14 +35,14 @@ interface ManagerInterface
      * @param $id
      * @return mixed
      */
-    public function find($entityName, $id);
+    public function find($id);
 
     /**
      * Search all entity data in the DB
      * @param $entityName
      * @return array
      */
-    public function findAll($entityName);
+    public function findAll();
 
     /**
      * Search all entity data in the DB like $criteria rules
@@ -50,5 +50,5 @@ interface ManagerInterface
      * @param array $criteria
      * @return mixed
      */
-    public function findBy($entityName, $criteria = []);
+    public function findBy($criteria = []);
 }

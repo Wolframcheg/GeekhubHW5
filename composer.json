@@ -17,6 +17,7 @@
     "require": {
         "php": ">=5.5.0",
         "ext-mysqlnd": "*",
-        "phroute/phroute": "^2.1"
+        "phroute/phroute": "^2.1",
+        "twig/twig": "^1.22"
     }
 }

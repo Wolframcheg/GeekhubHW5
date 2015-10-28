@@ -15,12 +15,13 @@ class PdoConnect implements ConnectorInterface{
             require(__DIR__ . '/../../config/config.php'),
             require(__DIR__ . '/../../config/config-local.php')
         );
+        $this->connect();
     }
 
     public function connect()
     {
         $this->pdo = new PDO("mysql:host={$this->config['host']}", $this->config['username'], $this->config['password']);
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);//PDO::ERRMODE_EXCEPTION ERRMODE_SILENT
         $this->connectToDb();
     }
 
@@ -31,10 +32,10 @@ class PdoConnect implements ConnectorInterface{
         $this->pdo->query("use $dbname");
     }
 
-    public function tableExists($table)
+
+    public function execute($query)
     {
-        $tableExists = $this->pdo->query("SHOW TABLES LIKE '{$table}'")->rowCount() > 0;
-        return $tableExists;
+        return $this->pdo->exec($query);
     }
 
 
