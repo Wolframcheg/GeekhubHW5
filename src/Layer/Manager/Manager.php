@@ -1,6 +1,6 @@
 <?php
 
-namespace Layer\Manager;
+namespace wolfram\Layer\Manager;
 
 /**
  * Class Manager

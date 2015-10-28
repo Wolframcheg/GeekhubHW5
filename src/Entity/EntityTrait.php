@@ -1,6 +1,6 @@
 <?php
 
-namespace Entity;
+namespace wolfram\Entity;
 
 /**
  * Class EntityTrait

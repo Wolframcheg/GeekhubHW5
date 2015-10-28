@@ -1,6 +1,6 @@
 <?php
 
-namespace Layer\Connector;
+namespace wolfram\Layer\Connector;
 
 /**
  * Interface ConnectorInterface
@@ -9,16 +9,13 @@ namespace Layer\Connector;
 interface ConnectorInterface
 {
     /**
-     * @param $host
-     * @param $user
-     * @param $password
      * @return mixed
      */
-    public function connect($host, $user, $password);
+    public function connect();
 
     /**
      * @param $db
      * @return mixed
      */
-    public function connectClose($db);
+    public function connectClose();
 }
