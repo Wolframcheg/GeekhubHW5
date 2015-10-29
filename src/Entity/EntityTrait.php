@@ -8,51 +8,21 @@ namespace wolfram\Entity;
  */
 trait EntityTrait
 {
-    /**
-     * @var \DateTime
-     */
-    private $createdAt;
 
-    /**
-     * @var \DateTime
-     */
-    private $updatedAt;
+    protected $created_at;
 
-    /**
-     * @var \DateTime
-     */
-    private $deletedAt;
 
-    /**
-     * @return \DateTime
-     */
+    protected $updated_at;
+
+
     public function getCreatedAt()
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
-    /**
-     * @param \DateTime $createdAt
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
-     * @return \DateTime
-     */
     public function getUpdatedAt()
     {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param \DateTime $updatedAt
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
+        return $this->updated_at;
     }
 
 }

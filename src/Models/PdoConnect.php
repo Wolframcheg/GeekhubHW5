@@ -21,7 +21,7 @@ class PdoConnect implements ConnectorInterface{
     public function connect()
     {
         $this->pdo = new PDO("mysql:host={$this->config['host']}", $this->config['username'], $this->config['password']);
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);//PDO::ERRMODE_EXCEPTION ERRMODE_SILENT
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);//PDO::ERRMODE_EXCEPTION ERRMODE_SILENT
         $this->connectToDb();
     }
 

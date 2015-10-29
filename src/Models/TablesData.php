@@ -49,11 +49,8 @@ class TablesData extends PdoConnect{
             max_speed varchar(200),
             id_vendor INT,
             number_wheel SMALLINT,
-            type_by_number_wheel varchar(30),
-            status enum('active','deleted') NOT NULL DEFAULT 'active',
             created_at INT NOT NULL,
             updated_at INT NOT NULL,
-            deleted_at INT,
             PRIMARY KEY (id))
             CHARACTER SET utf8 COLLATE utf8_general_ci
             ";

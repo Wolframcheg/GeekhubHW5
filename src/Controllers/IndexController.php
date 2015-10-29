@@ -3,6 +3,7 @@ namespace wolfram\Controllers;
 
 use wolfram\Models\Properties;
 use wolfram\Models\TablesData;
+use wolfram\Models\Transport;
 use wolfram\Models\Vendor;
 
 
@@ -39,6 +40,13 @@ class IndexController extends BaseController
         $template = $this->twig->loadTemplate('index/_item_properties.tpl');
         echo $template->render(array(
             'models' => $properties,
+        ));
+
+        $transports = new Transport();
+        $transports = $transports->findAll();
+        $template = $this->twig->loadTemplate('index/_item_transports.tpl');
+        echo $template->render(array(
+            'models' => $transports,
         ));
     }
 

@@ -17,4 +17,13 @@ class ActiveRecord extends PdoConnect{
         return self::load($array);
     }
 
+    public function hasOne($class, $link)
+    {
+        $param = key($link);
+        $param_for_value = $link[$param];
+        $model = new $class();
+        $model = $model->findBy([$param => $this->$param_for_value]);
+        return $model;
+    }
+
 }
