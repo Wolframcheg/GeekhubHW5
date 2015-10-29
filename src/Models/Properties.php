@@ -4,15 +4,19 @@ namespace wolfram\Models;
 use PDO;
 use wolfram\Layer\Manager\ManagerInterface;
 
-class Vendor extends ActiveRecord implements ManagerInterface {
+class Properties extends ActiveRecord implements ManagerInterface {
 
-    const FIND_ALL= "SELECT * FROM vendor";
-    const INSERT_STMT = "INSERT INTO vendor (name) VALUES (:name)";
-    const UPDATE_STMT = "UPDATE vendor SET name = :name WHERE id = :id";
-    const DELETE_STMT = "DELETE FROM vendor WHERE id = :id";
+    const FIND_ALL= "SELECT * FROM properties";
+    const INSERT_STMT = "INSERT INTO properties (name, type) VALUES (:name, :type)";
+    const UPDATE_STMT = "UPDATE properties SET name = :name, type = :type WHERE id = :id";
+    const DELETE_STMT = "DELETE FROM properties WHERE id = :id";
+
+    const TYPE_POSITIVE = 'positive';
+    const TYPE_NEGATIVE = 'negative';
 
     protected $id;
     protected $name;
+    protected $type;
 
     public function getId() {
         return $this->id;
@@ -26,10 +30,19 @@ class Vendor extends ActiveRecord implements ManagerInterface {
         $this->name = $name;
     }
 
+    public function getType() {
+        return $this->type;
+    }
+
+    public function setType($type) {
+        $this->type = $type;
+    }
+
 
     public function insert() {
         $stmt = $this->pdo->prepare(self::INSERT_STMT);
         $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
+        $stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
         $stmt->execute();
         $this->id = $this->pdo->lastInsertId();
     }
@@ -41,6 +54,7 @@ class Vendor extends ActiveRecord implements ManagerInterface {
         $stmt = $this->pdo->prepare(self::UPDATE_STMT);
         $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
         $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
+        $stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
         $stmt->execute();
     }
 
@@ -87,5 +101,12 @@ class Vendor extends ActiveRecord implements ManagerInterface {
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ? self::load($row) : null;
+    }
+
+    public static function getTypes()
+    {
+        return [
+            self::TYPE_POSITIVE, self::TYPE_NEGATIVE
+        ];
     }
 }

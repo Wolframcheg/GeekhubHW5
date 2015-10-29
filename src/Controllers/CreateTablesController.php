@@ -3,35 +3,40 @@ namespace wolfram\Controllers;
 
 use wolfram\Models\TablesData;
 
-class CreateTablesController
+class CreateTablesController extends BaseController
 {
 
     public function actionIndex()
     {
+        $messages = [];
         $tablesData = new TablesData();
-        $tablesData->createVendor();
-        $tablesData->createTransport();
-        $tablesData->createFK(
+        $messages[] = $tablesData->createVendor();
+        $messages[] = $tablesData->createTransport();
+        $messages[] = $tablesData->createFK(
             ['table' => 'transport', 'column' => 'id_vendor'],
             ['table' => 'vendor', 'column' => 'id']
         );
-        $tablesData->createPassport();
-        $tablesData->createFK(
+        $messages[] = $tablesData->createPassport();
+        $messages[] = $tablesData->createFK(
             ['table' => 'passport', 'column' => 'id_transport'],
             ['table' => 'transport', 'column' => 'id']
         );
-        $tablesData->createProperties();
-        $tablesData->createTransportProperties();
-        $tablesData->createFK(
+        $messages[] = $tablesData->createProperties();
+        $messages[] = $tablesData->createTransportProperties();
+        $messages[] = $tablesData->createFK(
             ['table' => 'transport_properties', 'column' => 'id_transport'],
             ['table' => 'transport', 'column' => 'id']
         );
-        $tablesData->createFK(
+        $messages[] = $tablesData->createFK(
             ['table' => 'transport_properties', 'column' => 'id_properties'],
             ['table' => 'properties', 'column' => 'id']
         );
-        echo '<a href="/" >Main page</a>';
 
+        $template = $this->twig->loadTemplate('create-tables/index.tpl');
+
+        echo $template->render(array(
+            'messages' => $messages,
+        ));
 
     }
 

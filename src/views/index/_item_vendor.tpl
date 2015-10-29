@@ -4,7 +4,7 @@
     <tr>
         <th>id</th>
         <th>name</th>
-        <th>
+        <th></th>
     </tr>
       {% for item in models %}
       <tr><td>{{item.getId}}</td>

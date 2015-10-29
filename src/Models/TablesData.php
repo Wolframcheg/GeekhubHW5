@@ -17,14 +17,11 @@ class TablesData extends PdoConnect{
         $errorTableExist = [];
         foreach ($arrTables as $table){
             if(!$this->tableExists($table)){
-                array_push($errorTableExist,'Table "' . $table .'" not exist.</a><br>');
+                array_push($errorTableExist,'Table "' . $table .'" not exist.');
             }
         }
         if(!empty($errorTableExist)){
-            foreach ($errorTableExist as $item){
-                echo $item;
-            }
-            return false;
+            return $errorTableExist;
         }
         return true;
     }
@@ -40,7 +37,7 @@ class TablesData extends PdoConnect{
             ";
         $result = $this->pdo->exec($query);
         if ($result !== false)
-            echo 'Table "vendor" was created.<br>';
+            return 'Table "vendor" was created.';
     }
 
     public function createTransport()
@@ -62,7 +59,7 @@ class TablesData extends PdoConnect{
             ";
         $result = $this->pdo->exec($query);
         if ($result !== false)
-            echo 'Table "transport" was created.<br>';
+            return 'Table "transport" was created.';
     }
 
     public function createPassport()
@@ -79,7 +76,7 @@ class TablesData extends PdoConnect{
             ";
         $result = $this->pdo->exec($query);
         if ($result !== false)
-            echo 'Table "passport" was created.<br>';
+            return 'Table "passport" was created.';
     }
 
     public function createProperties()
@@ -94,7 +91,7 @@ class TablesData extends PdoConnect{
             ";
         $result = $this->pdo->exec($query);
         if ($result !== false)
-            echo 'Table "properties" was created.<br>';
+            return 'Table "properties" was created.';
     }
 
     public function createTransportProperties()
@@ -107,7 +104,7 @@ class TablesData extends PdoConnect{
             ";
         $result = $this->pdo->exec($query);
         if ($result !== false)
-            echo 'Table "transport_properties" was created.<br>';
+            return 'Table "transport_properties" was created.';
     }
 
     public function createFK($child, $parent)
@@ -121,8 +118,8 @@ class TablesData extends PdoConnect{
         ";
         $result = $this->pdo->exec($query);
         if ($result !== false)
-            echo "FK for {$child['table']}.{$child['column']} created.<br>";
-        else echo "FK for {$child['table']}.{$child['column']} already exist.<br>";
+            return "FK for {$child['table']}.{$child['column']} created.";
+        else return "FK for {$child['table']}.{$child['column']} already exist.";
 
     }
 
