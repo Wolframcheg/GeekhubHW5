@@ -2,4 +2,4 @@
 <p>{{item}}</p>
 {% endfor %}
 
-<a href="/" >Main page</a>
+<a href="/">Main page</a>

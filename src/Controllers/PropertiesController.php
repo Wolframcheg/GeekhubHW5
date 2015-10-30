@@ -11,7 +11,7 @@ class PropertiesController extends BaseController
     {
         $properties = new Properties();
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $properties = $properties->fromArray($_POST);
             $properties->save();
             header('Location: /');
@@ -29,7 +29,7 @@ class PropertiesController extends BaseController
         $properties = new Properties();
         $properties = $properties->find($id);
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $properties = $properties->fromArray($_POST);
             $properties->save();
             header('Location: /');

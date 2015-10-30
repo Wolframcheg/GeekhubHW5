@@ -1,9 +1,13 @@
 <?php
 namespace wolfram\Models;
 
-class ActiveRecord extends PdoConnect{
+use wolfram\Layer\Connector\PdoConnect;
 
-    public static function load(array $resultset) {
+class ActiveRecord extends PdoConnect
+{
+
+    public static function load(array $resultset)
+    {
         $instance = new static;
         foreach ($resultset as $key => $value) {
             if (property_exists($instance, $key) && !empty($value)) {
@@ -12,8 +16,9 @@ class ActiveRecord extends PdoConnect{
         }
         return $instance;
     }
-    
-    public function fromArray($array){
+
+    public function fromArray($array)
+    {
         return self::load($array);
     }
 
@@ -26,4 +31,37 @@ class ActiveRecord extends PdoConnect{
         return $model;
     }
 
+    public function hasMany($class, $link)
+    {
+        $param = key($link);
+        $param_for_value = $link[$param];
+        $model = new $class();
+        $models = $model->findAllBy([$param => $this->$param_for_value]);
+        return $models;
+    }
+
+    public function hasManyViaTable($class, $link, $endClass, $endLink)
+    {
+        $param = key($link);
+        $param_for_value = $link[$param];
+        $model = new $class();
+        $models = $model->findAllBy([$param => $this->$param_for_value]);
+
+        if ($models) {
+            $param = key($endLink);
+            $param_for_array = $endLink[$param];
+            $values = '';
+            foreach ($models as $key => $item) {
+                if ($key) $values .= ',' . $item->get($param_for_array);
+                else $values .= $item->get($param_for_array);
+            }
+            $query = "WHERE {$param} IN ({$values})";
+
+            $endModels = new $endClass();
+            $endModels = $endModels->findAllByQuery($query);
+            return $endModels;
+        }
+
+        return $models;
+    }
 }

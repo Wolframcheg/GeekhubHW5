@@ -1,7 +1,6 @@
 <?php
 namespace wolfram\Controllers;
 
-use wolfram\Models\TablesData;
 use wolfram\Models\Vendor;
 
 
@@ -11,7 +10,7 @@ class VendorController extends BaseController
     {
         $vendor = new Vendor();
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $vendor = $vendor->fromArray($_POST);
             $vendor->save();
             header('Location: /');
@@ -29,7 +28,7 @@ class VendorController extends BaseController
         $vendor = new Vendor();
         $vendor = $vendor->find($id);
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $vendor = $vendor->fromArray($_POST);
             $vendor->save();
             header('Location: /');
@@ -39,6 +38,19 @@ class VendorController extends BaseController
                 'model' => $vendor,
             ));
         }
+    }
+
+    public function actionViewTransports($id)
+    {
+        $vendor = new Vendor();
+        $vendor = $vendor->find($id);
+        $transports = $vendor->getRelateTransports();
+
+        $template = $this->twig->loadTemplate('vendor/view_transports.tpl');
+        echo $template->render(array(
+            'model' => $vendor,
+            'transports' => $transports
+        ));
 
     }
 

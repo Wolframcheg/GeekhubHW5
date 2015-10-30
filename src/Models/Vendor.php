@@ -4,9 +4,10 @@ namespace wolfram\Models;
 use PDO;
 use wolfram\Layer\Manager\ManagerInterface;
 
-class Vendor extends ActiveRecord implements ManagerInterface {
+class Vendor extends ActiveRecord implements ManagerInterface
+{
 
-    const FIND_ALL= "SELECT * FROM vendor";
+    const FIND_ALL = "SELECT * FROM vendor";
     const INSERT_STMT = "INSERT INTO vendor (name) VALUES (:name)";
     const UPDATE_STMT = "UPDATE vendor SET name = :name WHERE id = :id";
     const DELETE_STMT = "DELETE FROM vendor WHERE id = :id";
@@ -14,27 +15,36 @@ class Vendor extends ActiveRecord implements ManagerInterface {
     protected $id;
     protected $name;
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
+    public function getRelateTransports()
+    {
+        return $this->hasMany('wolfram\Models\Transport', ['id_vendor' => 'id']);
+    }
 
-    public function insert() {
+    public function insert()
+    {
         $stmt = $this->pdo->prepare(self::INSERT_STMT);
         $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
         $stmt->execute();
         $this->id = $this->pdo->lastInsertId();
     }
 
-    public function update() {
+    public function update()
+    {
         if (!isset($this->id)) {
             throw new LogicException("Cannot update(): id is not defined");
         }
@@ -44,10 +54,12 @@ class Vendor extends ActiveRecord implements ManagerInterface {
         $stmt->execute();
     }
 
-    public function save() {
+    public function save()
+    {
         if (empty($this->id)) {
             $this->insert();
-        } $this->update();
+        }
+        $this->update();
     }
 
     public function remove()
@@ -63,7 +75,7 @@ class Vendor extends ActiveRecord implements ManagerInterface {
 
     public function find($id)
     {
-        return $this->findBy(['id'=>$id]);
+        return $this->findBy(['id' => $id]);
     }
 
     public function findAll()
@@ -72,13 +84,13 @@ class Vendor extends ActiveRecord implements ManagerInterface {
         $stmt->execute();
         $all = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $arrayObj = [];
-        foreach ($all as $row){
-            array_push($arrayObj,self::load($row));
+        foreach ($all as $row) {
+            array_push($arrayObj, self::load($row));
         }
         return !empty($arrayObj) ? $arrayObj : null;
     }
 
-    public function findBy( $criteria = [])
+    public function findBy($criteria = [])
     {
         $param = key($criteria);
         $value = $criteria[$param];

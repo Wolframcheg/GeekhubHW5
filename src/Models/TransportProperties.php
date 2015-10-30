@@ -4,53 +4,54 @@ namespace wolfram\Models;
 use PDO;
 use wolfram\Layer\Manager\ManagerInterface;
 
-class Properties extends ActiveRecord implements ManagerInterface
+class TransportProperties extends ActiveRecord implements ManagerInterface
 {
 
-    const FIND_ALL = "SELECT * FROM properties";
-    const ORDER = "ORDER BY type";
-    const INSERT_STMT = "INSERT INTO properties (name, type) VALUES (:name, :type)";
-    const UPDATE_STMT = "UPDATE properties SET name = :name, type = :type WHERE id = :id";
-    const DELETE_STMT = "DELETE FROM properties WHERE id = :id";
-
-    const TYPE_POSITIVE = 'positive';
-    const TYPE_NEGATIVE = 'negative';
+    const FIND_ALL = "SELECT * FROM transport_properties";
+    const INSERT_STMT = "INSERT INTO transport_properties (id_transport, id_properties) VALUES (:id_transport, :id_properties)";
+    const UPDATE_STMT = "UPDATE transport_properties SET id_transport = :id_transport, id_properties = :id_properties WHERE id = :id";
+    const DELETE_STMT = "DELETE FROM transport_properties WHERE id = :id";
 
     protected $id;
-    protected $name;
-    protected $type;
+    protected $id_transport;
+    protected $id_properties;
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function getName()
+    public function get($param)
     {
-        return $this->name;
+        return $this->$param;
     }
 
-    public function setName($name)
+    public function getIdTransport()
     {
-        $this->name = $name;
+        return $this->id_transport;
     }
 
-    public function getType()
+    public function setIdTransport($value)
     {
-        return $this->type;
+        $this->id_transport = $value;
     }
 
-    public function setType($type)
+    public function getIdProperties()
     {
-        $this->type = $type;
+        return $this->id_properties;
+    }
+
+    public function setIdProperties($value)
+    {
+        $this->id_properties = $value;
     }
 
 
     public function insert()
     {
         $stmt = $this->pdo->prepare(self::INSERT_STMT);
-        $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
-        $stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
+        $stmt->bindParam(':id_transport', $this->id_transport, PDO::PARAM_INT);
+        $stmt->bindParam(':id_properties', $this->id_properties, PDO::PARAM_INT);
         $stmt->execute();
         $this->id = $this->pdo->lastInsertId();
     }
@@ -62,14 +63,14 @@ class Properties extends ActiveRecord implements ManagerInterface
         }
         $stmt = $this->pdo->prepare(self::UPDATE_STMT);
         $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
-        $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
-        $stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
+        $stmt->bindParam(':id_transport', $this->id_transport, PDO::PARAM_INT);
+        $stmt->bindParam(':id_properties', $this->id_properties, PDO::PARAM_INT);
         $stmt->execute();
     }
 
     public function save()
     {
-        if (empty($this->id)) {
+        if (is_null($this->id) || empty($this->id)) {
             $this->insert();
         }
         $this->update();
@@ -93,7 +94,7 @@ class Properties extends ActiveRecord implements ManagerInterface
 
     public function findAll()
     {
-        $stmt = $this->pdo->prepare(self::FIND_ALL . ' ' . self::ORDER);
+        $stmt = $this->pdo->prepare(self::FIND_ALL);
         $stmt->execute();
         $all = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $arrayObj = [];
@@ -114,9 +115,12 @@ class Properties extends ActiveRecord implements ManagerInterface
         return $row ? self::load($row) : null;
     }
 
-    public function findAllByQuery($query)
+    public function findAllBy($criteria = [])
     {
-        $stmt = $this->pdo->prepare(self::FIND_ALL . ' ' . $query . self::ORDER);
+        $param = key($criteria);
+        $value = $criteria[$param];
+        $stmt = $this->pdo->prepare(self::FIND_ALL . " WHERE $param = :value");
+        $stmt->bindParam(':value', $value);
         $stmt->execute();
         $all = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $arrayObj = [];
@@ -126,16 +130,13 @@ class Properties extends ActiveRecord implements ManagerInterface
         return !empty($arrayObj) ? $arrayObj : null;
     }
 
-    public function toArray()
+    public function findOneByQuery($query)
     {
-        $arrObj = get_object_vars($this);
-        $output['id'] = $arrObj['id'];
-        $output['type'] = $arrObj['type'];
-        $output['name'] = $arrObj['name'];
-
-        return $output;
+        $stmt = $this->pdo->prepare(self::FIND_ALL . ' ' . $query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? self::load($row) : null;
     }
-
 
     public static function getTypes()
     {

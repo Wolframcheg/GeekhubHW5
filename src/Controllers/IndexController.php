@@ -20,7 +20,7 @@ class IndexController extends BaseController
             'properties',
             'transport_properties'
         ]);
-        if(is_array($exist)){
+        if (is_array($exist)) {
             $template = $this->twig->loadTemplate('index/tables_not_exist.tpl');
             echo $template->render(array(
                 'messages' => $exist,

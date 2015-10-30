@@ -1,5 +1,8 @@
 <h2>Transports</h2>
 <a href="/transport/create/">create Transport</a><br><br>
+{% if models is empty %}
+<p>No Data</p>
+{% else %}
 <table border="1">
     <tr>
         <th>id</th>
@@ -9,7 +12,8 @@
         <th></th>
     </tr>
     {% for item in models %}
-    <tr><td>{{item.getId}}</td>
+    <tr>
+        <td>{{item.getId}}</td>
         <td>{{item.getVendor}}</td>
         <td>{{item.getModel}}</td>
         <td>{{item.getMaxSpeed}}</td>
@@ -19,3 +23,4 @@
     </tr>
     {% endfor %}
 </table>
+{% endif %}

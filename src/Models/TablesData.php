@@ -1,10 +1,10 @@
 <?php
 namespace wolfram\Models;
 
-use wolfram\Layer\Connector\ConnectorInterface;
-use PDO;
+use wolfram\Layer\Connector\PdoConnect;
 
-class TablesData extends PdoConnect{
+class TablesData extends PdoConnect
+{
 
     public function tableExists($table)
     {
@@ -15,12 +15,12 @@ class TablesData extends PdoConnect{
     public function checkTablesExist($arrTables)
     {
         $errorTableExist = [];
-        foreach ($arrTables as $table){
-            if(!$this->tableExists($table)){
-                array_push($errorTableExist,'Table "' . $table .'" not exist.');
+        foreach ($arrTables as $table) {
+            if (!$this->tableExists($table)) {
+                array_push($errorTableExist, 'Table "' . $table . '" not exist.');
             }
         }
-        if(!empty($errorTableExist)){
+        if (!empty($errorTableExist)) {
             return $errorTableExist;
         }
         return true;
@@ -95,8 +95,10 @@ class TablesData extends PdoConnect{
     {
         $query = "
             CREATE TABLE IF NOT EXISTS transport_properties (
+            id INT AUTO_INCREMENT NOT NULL,
             id_transport INT,
-            id_properties INT)
+            id_properties INT,
+            PRIMARY KEY (id))
             CHARACTER SET utf8 COLLATE utf8_general_ci
             ";
         $result = $this->pdo->exec($query);

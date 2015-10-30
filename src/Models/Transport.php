@@ -5,10 +5,11 @@ use PDO;
 use wolfram\Entity\EntityTrait;
 use wolfram\Layer\Manager\ManagerInterface;
 
-class Transport extends ActiveRecord implements ManagerInterface {
+class Transport extends ActiveRecord implements ManagerInterface
+{
     use EntityTrait;
 
-    const FIND_ALL= "SELECT * FROM transport";
+    const FIND_ALL = "SELECT * FROM transport";
     const INSERT_STMT = "INSERT INTO transport (model, max_speed, id_vendor, number_wheel, created_at,
                         updated_at) VALUES (:model, :max_speed, :id_vendor, :number_wheel, :created_at,
                         :updated_at)";
@@ -23,48 +24,49 @@ class Transport extends ActiveRecord implements ManagerInterface {
     protected $number_wheel;
 
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getModel() {
+    public function getModel()
+    {
         return $this->model;
     }
 
-    public function setModel($value) {
+    public function setModel($value)
+    {
         $this->model = $value;
     }
 
-    public function getMaxSpeed() {
+    public function getMaxSpeed()
+    {
         return $this->max_speed;
     }
 
-    public function setMaxSpeed($value) {
+    public function setMaxSpeed($value)
+    {
         $this->max_speed = $value;
     }
 
-    public function getIdVendor() {
+    public function getIdVendor()
+    {
         return $this->id_vendor;
     }
 
-    public function setIdVendor($value) {
+    public function setIdVendor($value)
+    {
         $this->id_vendor = $value;
     }
 
-    public function getNumberWheel() {
+    public function getNumberWheel()
+    {
         return $this->number_wheel;
     }
 
-    public function setNumberWheel($value) {
+    public function setNumberWheel($value)
+    {
         $this->number_wheel = $value;
-    }
-
-    public function getStatus() {
-        return $this->status;
-    }
-
-    public function setStatus($value) {
-        $this->status = $value;
     }
 
     public function getRelateVendor()
@@ -78,39 +80,52 @@ class Transport extends ActiveRecord implements ManagerInterface {
         return $relateModel->getName();
     }
 
-    public function insert() {
+    public function getRelatePassport()
+    {
+        return $this->hasOne('wolfram\Models\Passport', ['id_transport' => 'id']);
+    }
+
+    public function getRelateProperties()
+    {
+        return $this->hasManyViaTable('wolfram\Models\TransportProperties', ['id_transport' => 'id'], 'wolfram\Models\Properties', ['id' => 'id_properties']);
+    }
+
+    public function insert()
+    {
+        $time = time();
         $stmt = $this->pdo->prepare(self::INSERT_STMT);
         $stmt->bindParam(':model', $this->model, PDO::PARAM_STR);
         $stmt->bindParam(':max_speed', $this->max_speed, PDO::PARAM_STR);
         $stmt->bindParam(':id_vendor', $this->id_vendor, PDO::PARAM_INT);
         $stmt->bindParam(':number_wheel', $this->number_wheel, PDO::PARAM_INT);
-        $stmt->bindParam(':number_wheel', $this->number_wheel, PDO::PARAM_INT);
-        $stmt->bindParam(':status', $this->status, PDO::PARAM_INT);
-        $stmt->bindParam(':created_at', time(), PDO::PARAM_INT);
-        $stmt->bindParam(':updated_at', time(), PDO::PARAM_INT);
+        $stmt->bindParam(':created_at', $time, PDO::PARAM_INT);
+        $stmt->bindParam(':updated_at', $time, PDO::PARAM_INT);
         $stmt->execute();
         $this->id = $this->pdo->lastInsertId();
     }
 
-    public function update() {
+    public function update()
+    {
         if (!isset($this->id)) {
             throw new LogicException("Cannot update(): id is not defined");
         }
+        $time = time();
         $stmt = $this->pdo->prepare(self::UPDATE_STMT);
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
         $stmt->bindParam(':model', $this->model, PDO::PARAM_STR);
         $stmt->bindParam(':max_speed', $this->max_speed, PDO::PARAM_STR);
         $stmt->bindParam(':id_vendor', $this->id_vendor, PDO::PARAM_INT);
         $stmt->bindParam(':number_wheel', $this->number_wheel, PDO::PARAM_INT);
-        $stmt->bindParam(':number_wheel', $this->number_wheel, PDO::PARAM_INT);
-        $stmt->bindParam(':status', $this->status, PDO::PARAM_INT);
-        $stmt->bindParam(':updated_at', time(), PDO::PARAM_INT);
+        $stmt->bindParam(':updated_at', $time, PDO::PARAM_INT);
         $stmt->execute();
     }
 
-    public function save() {
+    public function save()
+    {
         if (empty($this->id)) {
             $this->insert();
-        } $this->update();
+        }
+        $this->update();
     }
 
     public function remove()
@@ -126,7 +141,7 @@ class Transport extends ActiveRecord implements ManagerInterface {
 
     public function find($id)
     {
-        return $this->findBy(['id'=>$id]);
+        return $this->findBy(['id' => $id]);
     }
 
     public function findAll()
@@ -135,13 +150,28 @@ class Transport extends ActiveRecord implements ManagerInterface {
         $stmt->execute();
         $all = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $arrayObj = [];
-        foreach ($all as $row){
-            array_push($arrayObj,self::load($row));
+        foreach ($all as $row) {
+            array_push($arrayObj, self::load($row));
         }
         return !empty($arrayObj) ? $arrayObj : null;
     }
 
-    public function findBy( $criteria = [])
+    public function findAllBy($criteria = [])
+    {
+        $param = key($criteria);
+        $value = $criteria[$param];
+        $stmt = $this->pdo->prepare(self::FIND_ALL . " WHERE $param = :value");
+        $stmt->bindParam(':value', $value);
+        $stmt->execute();
+        $all = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $arrayObj = [];
+        foreach ($all as $row) {
+            array_push($arrayObj, self::load($row));
+        }
+        return !empty($arrayObj) ? $arrayObj : null;
+    }
+
+    public function findBy($criteria = [])
     {
         $param = key($criteria);
         $value = $criteria[$param];
