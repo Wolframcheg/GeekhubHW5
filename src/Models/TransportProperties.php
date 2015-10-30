@@ -141,7 +141,8 @@ class TransportProperties extends ActiveRecord implements ManagerInterface
     public static function getTypes()
     {
         return [
-            self::TYPE_POSITIVE, self::TYPE_NEGATIVE
+            self::TYPE_POSITIVE,
+            self::TYPE_NEGATIVE
         ];
     }
 }

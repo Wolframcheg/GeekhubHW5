@@ -52,8 +52,11 @@ class ActiveRecord extends PdoConnect
             $param_for_array = $endLink[$param];
             $values = '';
             foreach ($models as $key => $item) {
-                if ($key) $values .= ',' . $item->get($param_for_array);
-                else $values .= $item->get($param_for_array);
+                if ($key) {
+                    $values .= ',' . $item->get($param_for_array);
+                } else {
+                    $values .= $item->get($param_for_array);
+                }
             }
             $query = "WHERE {$param} IN ({$values})";
 

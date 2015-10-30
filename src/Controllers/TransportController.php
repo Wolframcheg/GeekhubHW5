@@ -96,13 +96,10 @@ class TransportController extends BaseController
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $model = new TransportProperties();
-            $model->setIdProperties($_POST['id_properties']);
-            $model->setIdTransport($_POST['id_transport']);
-            var_dump($model);
+            $model = $model->fromArray($_POST);
             $model->save();
         }
         header('Location: ' . $_SERVER['HTTP_REFERER']);
-
     }
 
 }

@@ -18,8 +18,10 @@ class BaseController
     {
         $output = [];
 
-        if ($array) foreach ($array as $key => $item) {
-            array_push($output, $item->toArray());
+        if ($array) {
+            foreach ($array as $key => $item) {
+                array_push($output, $item->toArray());
+            }
         }
         return $output;
     }

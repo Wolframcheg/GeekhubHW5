@@ -36,8 +36,9 @@ class TablesData extends PdoConnect
             CHARACTER SET utf8 COLLATE utf8_general_ci
             ";
         $result = $this->pdo->exec($query);
-        if ($result !== false)
+        if ($result !== false) {
             return 'Table "vendor" was created.';
+        }
     }
 
     public function createTransport()
@@ -55,8 +56,9 @@ class TablesData extends PdoConnect
             CHARACTER SET utf8 COLLATE utf8_general_ci
             ";
         $result = $this->pdo->exec($query);
-        if ($result !== false)
+        if ($result !== false) {
             return 'Table "transport" was created.';
+        }
     }
 
     public function createPassport()
@@ -72,8 +74,9 @@ class TablesData extends PdoConnect
             CHARACTER SET utf8 COLLATE utf8_general_ci
             ";
         $result = $this->pdo->exec($query);
-        if ($result !== false)
+        if ($result !== false) {
             return 'Table "passport" was created.';
+        }
     }
 
     public function createProperties()
@@ -87,8 +90,9 @@ class TablesData extends PdoConnect
             CHARACTER SET utf8 COLLATE utf8_general_ci
             ";
         $result = $this->pdo->exec($query);
-        if ($result !== false)
+        if ($result !== false) {
             return 'Table "properties" was created.';
+        }
     }
 
     public function createTransportProperties()
@@ -102,8 +106,9 @@ class TablesData extends PdoConnect
             CHARACTER SET utf8 COLLATE utf8_general_ci
             ";
         $result = $this->pdo->exec($query);
-        if ($result !== false)
+        if ($result !== false) {
             return 'Table "transport_properties" was created.';
+        }
     }
 
     public function createFK($child, $parent)
@@ -116,9 +121,11 @@ class TablesData extends PdoConnect
             ON DELETE CASCADE
         ";
         $result = $this->pdo->exec($query);
-        if ($result !== false)
+        if ($result !== false) {
             return "FK for {$child['table']}.{$child['column']} created.";
-        else return "FK for {$child['table']}.{$child['column']} already exist.";
+        } else {
+            return "FK for {$child['table']}.{$child['column']} already exist.";
+        }
 
     }
 

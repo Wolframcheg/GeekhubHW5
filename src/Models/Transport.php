@@ -87,7 +87,8 @@ class Transport extends ActiveRecord implements ManagerInterface
 
     public function getRelateProperties()
     {
-        return $this->hasManyViaTable('wolfram\Models\TransportProperties', ['id_transport' => 'id'], 'wolfram\Models\Properties', ['id' => 'id_properties']);
+        return $this->hasManyViaTable('wolfram\Models\TransportProperties', ['id_transport' => 'id'],
+            'wolfram\Models\Properties', ['id' => 'id_properties']);
     }
 
     public function insert()

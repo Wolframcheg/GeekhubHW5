@@ -24,3 +24,6 @@
     {% endfor %}
 </table>
 {% endif %}
+
+<h2>Shema</h2>
+<img src="shema.jpg">

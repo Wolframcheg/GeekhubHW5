@@ -2,7 +2,7 @@
 
 {% include 'transport/_form.tpl' %}
 
-<h2>Properties</h2>
+<h2>Properties (many-to-many)</h2>
 {% if transportProperties is null %}
 <p>This transport doesn't have any properties</p>
 {% else %}
