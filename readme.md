@@ -1,3 +1,6 @@
+Set config in /config/config.php
+[Demo](http://hw4.kuzserv.ru/)
+
 # HW4
 
 1. You should fork this repository.

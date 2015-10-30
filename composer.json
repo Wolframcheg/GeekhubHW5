@@ -10,12 +10,14 @@
     ],
     "autoload": {
         "psr-4": {
-            "Layer\\": "src/Layer/"
+            "wolfram\\": "src/"
         }
     },
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.5.0",
-        "ext-mysqlnd": "*"
+        "ext-mysqlnd": "*",
+        "phroute/phroute": "^2.1",
+        "twig/twig": "^1.22"
     }
 }

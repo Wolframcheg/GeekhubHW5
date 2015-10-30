@@ -1,6 +1,6 @@
 <?php
 
-namespace Entity;
+namespace wolfram\Entity;
 
 /**
  * Class EntityTrait
@@ -8,66 +8,21 @@ namespace Entity;
  */
 trait EntityTrait
 {
-    /**
-     * @var \DateTime
-     */
-    private $createdAt;
 
-    /**
-     * @var \DateTime
-     */
-    private $updatedAt;
+    protected $created_at;
 
-    /**
-     * @var \DateTime
-     */
-    private $deletedAt;
 
-    /**
-     * @return \DateTime
-     */
+    protected $updated_at;
+
+
     public function getCreatedAt()
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
-    /**
-     * @param \DateTime $createdAt
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
-     * @return \DateTime
-     */
     public function getUpdatedAt()
     {
-        return $this->updatedAt;
+        return $this->updated_at;
     }
 
-    /**
-     * @param \DateTime $updatedAt
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDeletedAt()
-    {
-        return $this->deletedAt;
-    }
-
-    /**
-     * @param \DateTime $deletedAt
-     */
-    public function setDeletedAt($deletedAt)
-    {
-        $this->deletedAt = $deletedAt;
-    }
 }
