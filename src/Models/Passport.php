@@ -65,13 +65,13 @@ class Passport extends ActiveRecord implements ManagerInterface
     public function insert()
     {
         $time = time();
-        $stmt = $this->pdo->prepare(self::INSERT_STMT);
+        $stmt = self::$pdo->prepare(self::INSERT_STMT);
         $stmt->bindParam(':manufactured_at', $this->manufactured_at, PDO::PARAM_STR);
         $stmt->bindParam(':id_transport', $this->id_transport, PDO::PARAM_STR);
         $stmt->bindParam(':personal_number', $this->personal_number, PDO::PARAM_INT);
         $stmt->bindParam(':price', $this->price, PDO::PARAM_INT);
         $stmt->execute();
-        $this->id = $this->pdo->lastInsertId();
+        $this->id = self::$pdo->lastInsertId();
     }
 
     public function update()
@@ -80,7 +80,7 @@ class Passport extends ActiveRecord implements ManagerInterface
             throw new LogicException("Cannot update(): id is not defined");
         }
         $time = time();
-        $stmt = $this->pdo->prepare(self::UPDATE_STMT);
+        $stmt = self::$pdo->prepare(self::UPDATE_STMT);
         $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
         $stmt->bindParam(':manufactured_at', $this->manufactured_at, PDO::PARAM_STR);
         $stmt->bindParam(':id_transport', $this->id_transport, PDO::PARAM_STR);
@@ -102,7 +102,7 @@ class Passport extends ActiveRecord implements ManagerInterface
         if (!isset($this->id)) {
             throw new LogicException("Cannot delete(): id is not defined");
         }
-        $stmt = $this->pdo->prepare(self::DELETE_STMT);
+        $stmt = self::$pdo->prepare(self::DELETE_STMT);
         $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
         $stmt->execute();
         $this->id = null;
@@ -115,7 +115,7 @@ class Passport extends ActiveRecord implements ManagerInterface
 
     public function findAll()
     {
-        $stmt = $this->pdo->prepare(self::FIND_ALL);
+        $stmt = self::$pdo->prepare(self::FIND_ALL);
         $stmt->execute();
         $all = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $arrayObj = [];
@@ -129,7 +129,7 @@ class Passport extends ActiveRecord implements ManagerInterface
     {
         $param = key($criteria);
         $value = $criteria[$param];
-        $stmt = $this->pdo->prepare(self::FIND_ALL . " WHERE $param = :value");
+        $stmt = self::$pdo->prepare(self::FIND_ALL . " WHERE $param = :value");
         $stmt->bindParam(':value', $value);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);

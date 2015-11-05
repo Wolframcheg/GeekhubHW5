@@ -48,11 +48,11 @@ class Properties extends ActiveRecord implements ManagerInterface
 
     public function insert()
     {
-        $stmt = $this->pdo->prepare(self::INSERT_STMT);
+        $stmt = self::$pdo->prepare(self::INSERT_STMT);
         $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
         $stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
         $stmt->execute();
-        $this->id = $this->pdo->lastInsertId();
+        $this->id = self::$pdo->lastInsertId();
     }
 
     public function update()
@@ -60,7 +60,7 @@ class Properties extends ActiveRecord implements ManagerInterface
         if (!isset($this->id)) {
             throw new LogicException("Cannot update(): id is not defined");
         }
-        $stmt = $this->pdo->prepare(self::UPDATE_STMT);
+        $stmt = self::$pdo->prepare(self::UPDATE_STMT);
         $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
         $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
         $stmt->bindParam(':type', $this->type, PDO::PARAM_STR);
@@ -80,7 +80,7 @@ class Properties extends ActiveRecord implements ManagerInterface
         if (!isset($this->id)) {
             throw new LogicException("Cannot delete(): id is not defined");
         }
-        $stmt = $this->pdo->prepare(self::DELETE_STMT);
+        $stmt = self::$pdo->prepare(self::DELETE_STMT);
         $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
         $stmt->execute();
         $this->id = null;
@@ -93,7 +93,7 @@ class Properties extends ActiveRecord implements ManagerInterface
 
     public function findAll()
     {
-        $stmt = $this->pdo->prepare(self::FIND_ALL . ' ' . self::ORDER);
+        $stmt = self::$pdo->prepare(self::FIND_ALL . ' ' . self::ORDER);
         $stmt->execute();
         $all = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $arrayObj = [];
@@ -107,7 +107,7 @@ class Properties extends ActiveRecord implements ManagerInterface
     {
         $param = key($criteria);
         $value = $criteria[$param];
-        $stmt = $this->pdo->prepare(self::FIND_ALL . " WHERE $param = :value");
+        $stmt = self::$pdo->prepare(self::FIND_ALL . " WHERE $param = :value");
         $stmt->bindParam(':value', $value);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -116,7 +116,7 @@ class Properties extends ActiveRecord implements ManagerInterface
 
     public function findAllByQuery($query)
     {
-        $stmt = $this->pdo->prepare(self::FIND_ALL . ' ' . $query . self::ORDER);
+        $stmt = self::$pdo->prepare(self::FIND_ALL . ' ' . $query . self::ORDER);
         $stmt->execute();
         $all = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $arrayObj = [];
