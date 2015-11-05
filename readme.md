@@ -1,1 +1,2 @@
-[![Build Status](https://travis-ci.org/Wolframcheg/GeekhubHW5.svg?branch=develop)](https://travis-ci.org/Wolframcheg/GeekhubHW5)
+Develop [![Develop](https://travis-ci.org/Wolframcheg/GeekhubHW5.svg?branch=develop)](https://travis-ci.org/Wolframcheg/GeekhubHW5)
+Master [![Master](https://travis-ci.org/Wolframcheg/GeekhubHW5.svg?branch=master)](https://travis-ci.org/Wolframcheg/GeekhubHW5)
