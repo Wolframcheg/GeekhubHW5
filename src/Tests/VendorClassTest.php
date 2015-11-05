@@ -29,12 +29,12 @@ class VendorClassTest extends \PHPUnit_Framework_TestCase
     public function testUpdate()
     {
         $STMTstub = $this->getMock('PDOStatement');
-        $STMTstub->expects($this->exactly(0))
+        $STMTstub->expects($this->never())
             ->method('execute');
 
         $connect = $this->getMock('PDOMock',['prepare','lastInsertId']);
 
-        $connect->expects($this->exactly(0))
+        $connect->expects($this->never())
             ->method('prepare')
             ->will($this->returnValue($STMTstub));
 
