@@ -3,6 +3,8 @@ namespace wolfram\Controllers;
 
 use Twig_Loader_Filesystem;
 use Twig_Environment;
+use wolfram\Layer\Connector\SinglePdoConnect;
+use wolfram\Models\ActiveRecord;
 
 class BaseController
 {
@@ -12,6 +14,9 @@ class BaseController
     {
         $loader = new Twig_Loader_Filesystem(__DIR__ . '/../views');
         $this->twig = new Twig_Environment($loader);
+
+        $connect = SinglePdoConnect::getInstance();
+        ActiveRecord::setPDO($connect);
     }
 
     public function getArrayFromArrayOfObject($array)
@@ -39,6 +44,5 @@ class BaseController
         }
         return $outArray;
     }
-
 
 }

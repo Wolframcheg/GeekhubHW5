@@ -3,8 +3,15 @@ namespace wolfram\Models;
 
 use wolfram\Layer\Connector\PdoConnect;
 
-class TablesData extends PdoConnect
+class TablesData
 {
+    protected $pdo;
+
+    public function __construct(\PDO $pdo)
+    {
+        $this->pdo = $pdo;
+    }
+
 
     public function tableExists($table)
     {

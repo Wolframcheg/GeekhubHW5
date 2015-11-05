@@ -37,18 +37,18 @@ class Vendor extends ActiveRecord implements ManagerInterface
 
     public function insert()
     {
-        $stmt = $this->pdo->prepare(self::INSERT_STMT);
+        $stmt = self::$pdo->prepare(self::INSERT_STMT);
         $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
         $stmt->execute();
-        $this->id = $this->pdo->lastInsertId();
+        $this->id = self::$pdo->lastInsertId();
     }
 
     public function update()
     {
         if (!isset($this->id)) {
-            throw new LogicException("Cannot update(): id is not defined");
+            return "Cannot update(): id is not defined";
         }
-        $stmt = $this->pdo->prepare(self::UPDATE_STMT);
+        $stmt = self::$pdo->prepare(self::UPDATE_STMT);
         $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
         $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
         $stmt->execute();
@@ -56,9 +56,10 @@ class Vendor extends ActiveRecord implements ManagerInterface
 
     public function save()
     {
-        if (empty($this->id)) {
+
+        if (is_null($this->id) || empty($this->id)) {
             $this->insert();
-        }
+        } else
         $this->update();
     }
 
@@ -67,7 +68,7 @@ class Vendor extends ActiveRecord implements ManagerInterface
         if (!isset($this->id)) {
             throw new LogicException("Cannot delete(): id is not defined");
         }
-        $stmt = $this->pdo->prepare(self::DELETE_STMT);
+        $stmt = self::$pdo->prepare(self::DELETE_STMT);
         $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
         $stmt->execute();
         $this->id = null;
@@ -80,7 +81,7 @@ class Vendor extends ActiveRecord implements ManagerInterface
 
     public function findAll()
     {
-        $stmt = $this->pdo->prepare(self::FIND_ALL);
+        $stmt = self::$pdo->prepare(self::FIND_ALL);
         $stmt->execute();
         $all = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $arrayObj = [];
@@ -94,10 +95,14 @@ class Vendor extends ActiveRecord implements ManagerInterface
     {
         $param = key($criteria);
         $value = $criteria[$param];
-        $stmt = $this->pdo->prepare(self::FIND_ALL . " WHERE $param = :value");
+        $stmt = self::$pdo->prepare(self::FIND_ALL . " WHERE $param = :value");
         $stmt->bindParam(':value', $value);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ? self::load($row) : null;
+    }
+
+    public function add($a,$b){
+        return $a + $b;
     }
 }

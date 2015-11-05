@@ -1,6 +1,7 @@
 <?php
 namespace wolfram\Controllers;
 
+use wolfram\Layer\Connector\SinglePdoConnect;
 use wolfram\Models\Properties;
 use wolfram\Models\TablesData;
 use wolfram\Models\Transport;
@@ -12,7 +13,8 @@ class IndexController extends BaseController
 
     public function actionIndex()
     {
-        $tablesData = new TablesData();
+        $connect = SinglePdoConnect::getInstance();
+        $tablesData = new TablesData($connect);
         $exist = $tablesData->checkTablesExist([
             'transport',
             'passport',

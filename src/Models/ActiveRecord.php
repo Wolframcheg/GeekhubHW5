@@ -2,9 +2,18 @@
 namespace wolfram\Models;
 
 use wolfram\Layer\Connector\PdoConnect;
+use PDO;
 
-class ActiveRecord extends PdoConnect
+class ActiveRecord
 {
+
+
+    protected static $pdo = null;
+
+    public static function setPDO($pdo)
+    {
+        self::$pdo = $pdo;
+    }
 
     public static function load(array $resultset)
     {
@@ -67,4 +76,6 @@ class ActiveRecord extends PdoConnect
 
         return $models;
     }
+
+
 }
